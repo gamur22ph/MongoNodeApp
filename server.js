@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 require('dotenv').config();
 
 // Initialization
@@ -11,17 +12,23 @@ app.use(cors());
 app.use(express.json());
 
 // Program Flow
-app.get("/", (req, res) => {
-    res.send("this is the server of the website");
-})
+// app.get("/", (req, res) => {
+//     res.send("this is the server of the website");
+// })
 
-// Posts Route
+// API Route
 app.use("/posts", require('./routes/posts'));
 app.use("/api", require('./routes/api/index'));
 
-// Error Page if not found
-app.use("*", (req, res) => {
-    res.status(404).send("Error 404: Not Found.");
+// Client Route
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+app.use("/*", async(req, res) => {
+    try {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    } catch (error) {
+        console.error(error);
+    }
 })
 
 mongoose.connect(process.env.DB_CONNECTION, {useNewUrlParser: true, useUnifiedTopology: true }, () => {
