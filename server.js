@@ -21,15 +21,17 @@ app.use("/posts", require('./routes/posts'));
 app.use("/api", require('./routes/api/index'));
 
 // Client Route
-app.use(express.static(path.join(__dirname, 'client', 'build')));
-
-app.use("/*", async(req, res) => {
-    try {
-        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-    } catch (error) {
-        console.error(error);
-    }
-})
+// UNCOMMENT THE CODE BELOW TO WORK WITH BUILD
+// // START
+// app.use(express.static(path.join(__dirname, 'client', 'build')));
+// app.use("/*", async(req, res) => {
+//     try {
+//         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+//     } catch (error) {
+//         console.error(error);
+//     }
+// })
+// // END
 
 mongoose.connect(process.env.DB_CONNECTION, {useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log("MongoDB is working");
